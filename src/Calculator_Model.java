@@ -1,8 +1,10 @@
+import javax.security.auth.PrivateCredentialPermission;
+
 public class Calculator_Model {
-    public double inputNo;
-    public char operator;
-    public double answer;
-    public int resetVal;
+    private double inputNo;
+    private char operator;
+    private double answer;
+    private int resetVal;
 
     public Calculator_Model() {
         inputNo = 0;
@@ -12,6 +14,38 @@ public class Calculator_Model {
 
     public void resetDisplay() {
         resetVal = 0;
+    }
+
+    public double getInputNo() {
+        return inputNo;
+    }
+
+    public void setInputNo(double val) {
+        inputNo = val;
+    }
+
+    public char getOperator() {
+        return operator;
+    }
+
+    public void setOperator(char op) {
+        operator = op;
+    }
+
+    public double getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(double result) {
+        answer = result;
+    }
+
+    public int getResetVal() {
+        return resetVal;
+    }
+
+    public void setResetVal(int rVal) {
+        resetVal = rVal;
     }
     
 }

@@ -32,6 +32,8 @@ public class Calculator_Controller {
         view.nineButton.addActionListener(new Actions());
         view.zeroButton.addActionListener(new Actions());
         view.decButton.addActionListener(new Actions());
+
+        
     }
 
     class Actions implements ActionListener {
@@ -41,7 +43,7 @@ public class Calculator_Controller {
                 Object cmdSource = e.getSource();
 
                 if (calView.outputField.getText().equals("NaN") || calView.outputField.getText().equals("Infinity")) {
-                    calModel.resetDisplay();
+                    calModel.setResetVal(0);
                 }
 
                 for (int i = 0; i < 10; i++) {
@@ -66,21 +68,21 @@ public class Calculator_Controller {
                         calView.outputField.setText(calView.outputField.getText() + ".");
                     }
                 } else if (cmdSource == calView.addButton) {
-                    calModel.inputNo = Double.parseDouble(calView.outputField.getText());
+                    calModel.setInputNo(Double.parseDouble(calView.outputField.getText())); 
                     calView.outputField.setText("");
-                    calModel.operator = '+';
+                    calModel.setOperator('+');
                 } else if (cmdSource == calView.subButton) {
-                    calModel.inputNo = Double.parseDouble(calView.outputField.getText());
+                    calModel.setInputNo(Double.parseDouble(calView.outputField.getText()));
                     calView.outputField.setText("");
-                    calModel.operator = '-';
+                    calModel.setOperator('-');
                 } else if (cmdSource == calView.multButton) {
-                    calModel.inputNo = Double.parseDouble(calView.outputField.getText());
+                    calModel.setInputNo(Double.parseDouble(calView.outputField.getText())); 
                     calView.outputField.setText("");
-                    calModel.operator = '*';
+                    calModel.setOperator('*');
                 } else if (cmdSource == calView.divButton) {
-                    calModel.inputNo = Double.parseDouble(calView.outputField.getText());
+                    calModel.setInputNo(Double.parseDouble(calView.outputField.getText())); 
                     calView.outputField.setText("");
-                    calModel.operator = '/';
+                    calModel.setOperator('/');
                 } else if (cmdSource == calView.sqButton) {
                     calculateSquare();
                 } else if (cmdSource == calView.sqRtButton) {
@@ -151,7 +153,7 @@ public class Calculator_Controller {
         }
 
         private void clearOutput() {
-            calView.outputField.setText(Integer.toString(calModel.resetVal));
+            calView.outputField.setText(Integer.toString(calModel.getResetVal()));
         }
 
         private void deleteInput() {
@@ -176,8 +178,8 @@ public class Calculator_Controller {
             if (calView.outputField.getText().equals("")) {
                 calView.outputField.setText("NaN");
             } else {
-                calModel.inputNo = Double.parseDouble(calView.outputField.getText());
-                double square = Math.pow(calModel.inputNo, 2);
+                calModel.setInputNo(Double.parseDouble(calView.outputField.getText())); 
+                double square = Math.pow(calModel.getInputNo(), 2);
                 String squareStr = Double.toString(square);
                 if (squareStr.endsWith(".0")) {
                     calView.outputField.setText(squareStr.replace(".0", ""));
@@ -192,8 +194,8 @@ public class Calculator_Controller {
             if (calView.outputField.getText().equals("")) {
                 calView.outputField.setText("NaN");
             } else {
-                calModel.inputNo = Double.parseDouble(calView.outputField.getText());
-                Double squareRt = Math.sqrt(calModel.inputNo);
+                calModel.setInputNo(Double.parseDouble(calView.outputField.getText())); 
+                Double squareRt = Math.sqrt(calModel.getInputNo());
                 String sqRtStr = Double.toString(squareRt);
                 if (sqRtStr.endsWith(".0")) {
                     calView.outputField.setText(sqRtStr.replace(".0", ""));
@@ -208,8 +210,8 @@ public class Calculator_Controller {
             if (calView.outputField.getText().equals("")) {
                 calView.outputField.setText("NaN");
             } else {
-                calModel.inputNo = Double.parseDouble(calView.outputField.getText());
-                Double reciprocal = 1 / calModel.inputNo;
+                calModel.setInputNo(Double.parseDouble(calView.outputField.getText())); 
+                Double reciprocal = 1 / calModel.getInputNo();
                 String reciprocalStr = Double.toString(reciprocal);
                 if (reciprocalStr.endsWith(".0")) {
                     calView.outputField.setText(reciprocalStr.replace(".0", ""));
@@ -221,37 +223,37 @@ public class Calculator_Controller {
     
         private void calculate() {
             // We will replace the .0 for all of our double calculations that are not a decimal (i.e. Double)
-            switch (calModel.operator) {
+            switch (calModel.getOperator()) {
                 case '+':
-                calModel.answer = calModel.inputNo + Double.parseDouble(calView.outputField.getText());
-                    if (Double.toString(calModel.answer).endsWith(".0")) {
-                        calView.outputField.setText(Double.toString(calModel.answer).replace(".0", ""));
+                calModel.setAnswer(calModel.getInputNo() + Double.parseDouble(calView.outputField.getText()));
+                    if (Double.toString(calModel.getAnswer()).endsWith(".0")) {
+                        calView.outputField.setText(Double.toString(calModel.getAnswer()).replace(".0", ""));
                     } else {
-                        calView.outputField.setText(Double.toString(calModel.answer));
+                        calView.outputField.setText(Double.toString(calModel.getAnswer()));
                     }
                     break;
                 case '-':
-                calModel.answer = calModel.inputNo - Double.parseDouble(calView.outputField.getText());
-                    if (Double.toString(calModel.answer).endsWith(".0")) {
-                        calView.outputField.setText(Double.toString(calModel.answer).replace(".0", ""));
+                calModel.setAnswer(calModel.getInputNo() - Double.parseDouble(calView.outputField.getText()));
+                    if (Double.toString(calModel.getAnswer()).endsWith(".0")) {
+                        calView.outputField.setText(Double.toString(calModel.getAnswer()).replace(".0", ""));
                     } else {
-                        calView.outputField.setText(Double.toString(calModel.answer));
+                        calView.outputField.setText(Double.toString(calModel.getAnswer()));
                     }
                     break;
                 case '*':
-                calModel.answer = calModel.inputNo * Double.parseDouble(calView.outputField.getText());
-                    if (Double.toString(calModel.answer).endsWith(".0")) {
-                        calView.outputField.setText(Double.toString(calModel.answer).replace(".0", ""));
+                calModel.setAnswer(calModel.getInputNo() * Double.parseDouble(calView.outputField.getText()));
+                    if (Double.toString(calModel.getAnswer()).endsWith(".0")) {
+                        calView.outputField.setText(Double.toString(calModel.getAnswer()).replace(".0", ""));
                     } else {
-                        calView.outputField.setText(Double.toString(calModel.answer));
+                        calView.outputField.setText(Double.toString(calModel.getAnswer()));
                     }
                     break;
                 case '/':
-                calModel.answer = calModel.inputNo / Double.parseDouble(calView.outputField.getText());
-                    if (Double.toString(calModel.answer).endsWith(".0")) {
-                        calView.outputField.setText(Double.toString(calModel.answer).replace(".0", ""));
+                calModel.setAnswer(calModel.getInputNo() / Double.parseDouble(calView.outputField.getText()));
+                    if (Double.toString(calModel.getAnswer()).endsWith(".0")) {
+                        calView.outputField.setText(Double.toString(calModel.getAnswer()).replace(".0", ""));
                     } else {
-                        calView.outputField.setText(Double.toString(calModel.answer));
+                        calView.outputField.setText(Double.toString(calModel.getAnswer()));
                     }
                     break;
             }
