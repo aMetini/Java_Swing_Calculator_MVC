@@ -1,39 +1,45 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Calculator_Controller {
     private Calculator_Model calModel;
     private Calculator_View calView;
 
+    private final int MAX_ROUNDING_DECIMALS = 3;
+
     Calculator_Controller(Calculator_Model model, Calculator_View view) {
         calModel = model;
         calView = view;
 
-        view.onButton.addActionListener(new Actions());
-        view.offButton.addActionListener(new Actions());
-        view.addButton.addActionListener(new Actions());
-        view.subButton.addActionListener(new Actions());
-        view.multButton.addActionListener(new Actions());
-        view.divButton.addActionListener(new Actions());
-        view.sqRtButton.addActionListener(new Actions());
-        view.sqButton.addActionListener(new Actions());
-        view.reciprocalButton.addActionListener(new Actions());
-        view.equButton.addActionListener(new Actions());
-        view.clrButton.addActionListener(new Actions());
-        view.delButton.addActionListener(new Actions());
-        view.oneButton.addActionListener(new Actions());
-        view.twoButton.addActionListener(new Actions());
-        view.threeButton.addActionListener(new Actions());
-        view.fourButton.addActionListener(new Actions());
-        view.fiveButton.addActionListener(new Actions());
-        view.sixButton.addActionListener(new Actions());
-        view.sevenButton.addActionListener(new Actions());
-        view.eightButton.addActionListener(new Actions());
-        view.nineButton.addActionListener(new Actions());
-        view.zeroButton.addActionListener(new Actions());
-        view.decButton.addActionListener(new Actions());
+        intitateController();
+    }
 
-        
+    private void intitateController() {
+        calView.onButton.addActionListener(new Actions());
+        calView.offButton.addActionListener(new Actions());
+        calView.addButton.addActionListener(new Actions());
+        calView.subButton.addActionListener(new Actions());
+        calView.multButton.addActionListener(new Actions());
+        calView.divButton.addActionListener(new Actions());
+        calView.sqRtButton.addActionListener(new Actions());
+        calView.sqButton.addActionListener(new Actions());
+        calView.reciprocalButton.addActionListener(new Actions());
+        calView.equButton.addActionListener(new Actions());
+        calView.clrButton.addActionListener(new Actions());
+        calView.delButton.addActionListener(new Actions());
+        calView.oneButton.addActionListener(new Actions());
+        calView.twoButton.addActionListener(new Actions());
+        calView.threeButton.addActionListener(new Actions());
+        calView.fourButton.addActionListener(new Actions());
+        calView.fiveButton.addActionListener(new Actions());
+        calView.sixButton.addActionListener(new Actions());
+        calView.sevenButton.addActionListener(new Actions());
+        calView.eightButton.addActionListener(new Actions());
+        calView.nineButton.addActionListener(new Actions());
+        calView.zeroButton.addActionListener(new Actions());
+        calView.decButton.addActionListener(new Actions());
     }
 
     class Actions implements ActionListener {
@@ -48,7 +54,11 @@ public class Calculator_Controller {
 
                 for (int i = 0; i < 10; i++) {
                     if (cmdSource == calView.numBtnsArry[i]) {
-                        calView.outputField.setText(calView.outputField.getText().concat(String.valueOf(i)));
+                        if (calView.outputField.getText().equals("0")) {
+                            calView.outputField.setText(calView.outputField.getText().replace("0", String.valueOf(i)));
+                        } else {
+                            calView.outputField.setText(calView.outputField.getText().concat(String.valueOf(i)));
+                        }
                     }
                 }
 
@@ -221,7 +231,7 @@ public class Calculator_Controller {
             }
         }
     
-        private void calculate() {
+        private double calculate() {
             // We will replace the .0 for all of our double calculations that are not a decimal (i.e. Double)
             switch (calModel.getOperator()) {
                 case '+':
@@ -257,6 +267,18 @@ public class Calculator_Controller {
                     }
                     break;
             }
+            return round(calModel.getAnswer(), MAX_ROUNDING_DECIMALS);
+        }
+
+        private double round(double answer, int maxRoundingDecimals) {
+            try {
+                BigDecimal bigDecimal = new BigDecimal(Double.toString(answer));
+            bigDecimal = bigDecimal.setScale(maxRoundingDecimals, RoundingMode.HALF_UP);
+            return bigDecimal.doubleValue();
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Error - cannot format given number");
+            }
+            
         }
     }
 }
